@@ -1,0 +1,285 @@
+Index: src/NPC.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/NPC.java b/src/NPC.java
+--- a/src/NPC.java
++++ b/src/NPC.java	(date 1768411017521)
+@@ -1,2 +1,8 @@
+-public class NPC {
++public class NPC extends Character{
++
++    public NPC(int row, int col, char symbol) {
++        super(row, col, 'N');
++    }
++
++
+ }
+Index: src/Item.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Item.java b/src/Item.java
+--- a/src/Item.java
++++ b/src/Item.java	(date 1768411017507)
+@@ -8,7 +8,7 @@
+         this.col = col;
+     }
+ 
+-    public void place(Grid location) {
++    public void placeItem(Grid location) {
+         location.setCell(row, col, 'I');
+     }
+ }
+Index: src/Enemy.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Enemy.java b/src/Enemy.java
+new file mode 100644
+--- /dev/null	(date 1768411017500)
++++ b/src/Enemy.java	(date 1768411017500)
+@@ -0,0 +1,15 @@
++public class Enemy extends Character {
++
++
++
++    public Enemy(int row, int col) {
++        super(row, col, 'E');
++
++    }
++
++
++
++
++
++
++}//end Enemy
+Index: src/Sword.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Sword.java b/src/Sword.java
+new file mode 100644
+--- /dev/null	(date 1768410536392)
++++ b/src/Sword.java	(date 1768410536392)
+@@ -0,0 +1,15 @@
++public class Sword extends Item {
++
++
++    private String itemName;
++
++    public Sword(int row, int col, String itemName) {
++        super(row, col);
++        this.itemName = itemName;
++    }
++
++    private void place(int row, int col, Grid location) {
++        location.setCell(row, col, 'S');
++    }
++
++}
+Index: src/Player.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Player.java b/src/Player.java
+--- a/src/Player.java
++++ b/src/Player.java	(date 1768411117893)
+@@ -1,51 +1,52 @@
+ public class Player extends Character {
+-
++    
+     public Player(int row, int col) {
+-        super(row, col, 'P');
++        super(row, col,'P' );
+     }
+ 
+-    public void move(String direction, Grid grid) {
++    public void move(String command, Grid grid) {
+ 
+         int newRow = row;
+         int newCol = col;
+ 
+-        switch (direction) {
++        switch (command) {
+             case "w":
+-            case "north":
+                 newRow--;
+                 break;
+             case "s":
+-            case "south":
+                 newRow++;
+                 break;
+             case "a":
+-            case "west":
+                 newCol--;
+                 break;
+             case "d":
+-            case "east":
+                 newCol++;
+                 break;
+             default:
+-                System.out.println("Invalid command.");
++                System.out.println("Invalid input. WASD. It’s not hard.");
+                 return;
+         }
+ 
+         // bounds check
+-        if (newRow < 0 || newRow >= grid.getRows() ||
+-                newCol < 0 || newCol >= grid.getCols()) {
++        if (newRow < 0 || newRow >= grid.getRows()
++                || newCol < 0 || newCol >= grid.getCols()) {
+             System.out.println("You hit the edge of the map.");
+             return;
+         }
+ 
+         // obstacle check
+         if (grid.getCell(newRow, newCol) == 'O') {
+-            System.out.println("Obstacle in the way.");
++            System.out.println("There is an obstacle blocking the way.");
+             return;
+         }
+ 
+-        // update grid
+-        grid.setCell(row, col, '.');
++        if (grid.getCell(newRow, newCol) == 'S') {
++            System.out.println("You got a sword!");
++            return;
++        }
++
++        // move player
++        grid.setCell(row, col, ' ');
+         row = newRow;
+         col = newCol;
+         grid.setCell(row, col, symbol);
+Index: src/Location.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Location.java b/src/Location.java
+--- a/src/Location.java
++++ b/src/Location.java	(date 1768409847859)
+@@ -9,6 +9,6 @@
+         }
+ 
+         public void place(Grid location) {
+-            location.setCell(row, col, 'O');
++            location.setCell(row, col, 'L');
+         }
+ }
+Index: src/Character.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Character.java b/src/Character.java
+--- a/src/Character.java
++++ b/src/Character.java	(date 1768411017493)
+@@ -4,10 +4,12 @@
+     protected int col;
+     protected char symbol;
+ 
++
+     public Character(int row, int col, char symbol) {
+         this.row = row;
+         this.col = col;
+         this.symbol = symbol;
++
+     }
+ 
+     public int getRow() {
+Index: src/ProjectRunner.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/ProjectRunner.java b/src/ProjectRunner.java
+--- a/src/ProjectRunner.java
++++ b/src/ProjectRunner.java	(date 1768411315022)
+@@ -1,36 +1,53 @@
+-import java.util.Scanner;
+-
+-public class ProjectRunner {
+-
+-    public static void main(String[] args) {
+-
+-        Grid grid = new Grid(7, 10);
+-        Player player = new Player(2, 2);
+-
+-        grid.setCell(2, 2, 'P');
++public class Player extends Character {
+ 
+-        Obstacle obstacle = new Obstacle(1, 1);
+-        obstacle.place(grid);
++    public Player(int row, int col) {
++        super(row, col, 'P');
++    }
+ 
+-        Item item = new Item(3, 1);
+-        item.place(grid);
++    public void move(String direction, Location location) {
+ 
+-        Scanner scanner = new Scanner(System.in);
++        int newRow = row;
++        int newCol = col;
+ 
+-        grid.display();
+-
+-        while (true) {
+-            System.out.print("Move (w/a/s/d or quit): ");
+-            String command = scanner.nextLine().toLowerCase();
+-
+-            if (command.equals("quit")) {
++        switch (direction) {
++            case "n":
++            case "north":
++                newRow--;
++                break;
++            case "s":
++            case "south":
++                newRow++;
+                 break;
+-            }
++            case "w":
++            case "west":
++                newCol--;
++                break;
++            case "e":
++            case "east":
++                newCol++;
++                break;
++            default:
++                System.out.println("Invalid command.");
++                return;
++        }
++
++        // bounds check
++        if (newRow < 0 || newRow >= location.getRows() ||
++                newCol < 0 || newCol >= location.getCols()) {
++            System.out.println("You hit the edge of the map.");
++            return;
++        }
+ 
+-            player.move(command, grid);
+-            grid.display();
++        // obstacle check
++        if (location.getCell(newRow, newCol) == 'O') {
++            System.out.println("Obstacle in the way.");
++            return;
+         }
+ 
+-        scanner.close();
++        // update grid
++        location.setCell(row, col, 'E');
++        row = newRow;
++        col = newCol;
++        location.setCell(row, col, symbol);
+     }
+ }

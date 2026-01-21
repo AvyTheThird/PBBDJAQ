@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>ProjectRunner.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ProjectRunner.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Scanner</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Random</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">ProjectRunner </span><span class="s2">{</span>
+
+     <span class="s0">static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+
+         <span class="s1">String</span><span class="s2">[] </span><span class="s1">shopItems </span><span class="s2">= {</span><span class="s3">&quot;health potion&quot;</span><span class="s2">, </span><span class="s3">&quot;gigasword&quot;</span><span class="s2">, </span><span class="s3">&quot;gigaarmor&quot;</span><span class="s2">}; </span><span class="s4">//shop items</span>
+
+        <span class="s1">Grid grid </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Grid</span><span class="s2">(</span><span class="s5">7</span><span class="s2">, </span><span class="s5">10</span><span class="s2">);</span><span class="s4">//creates grid</span>
+        <span class="s1">Player player </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Player</span><span class="s2">();</span>
+        <span class="s1">grid</span><span class="s2">.</span><span class="s1">setCell</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s5">2</span><span class="s2">, </span><span class="s3">'P'</span><span class="s2">); </span><span class="s4">//spawns player at 2,2</span>
+
+        <span class="s1">Obstacle obstacle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Obstacle</span><span class="s2">(</span><span class="s5">1</span><span class="s2">, </span><span class="s5">1</span><span class="s2">); </span><span class="s4">//obstacle at 1,1</span>
+        <span class="s1">obstacle</span><span class="s2">.</span><span class="s1">place</span><span class="s2">(</span><span class="s1">grid</span><span class="s2">);</span>
+
+         <span class="s1">Obstacle obstacle2 </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Obstacle</span><span class="s2">(</span><span class="s5">3</span><span class="s2">, </span><span class="s5">3</span><span class="s2">); </span><span class="s4">//obstacle at 1,1</span>
+         <span class="s1">obstacle2</span><span class="s2">.</span><span class="s1">place</span><span class="s2">(</span><span class="s1">grid</span><span class="s2">);</span>
+
+         <span class="s1">Boss boss </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Boss</span><span class="s2">(</span><span class="s5">6</span><span class="s2">, </span><span class="s5">1</span><span class="s2">);  </span><span class="s4">//boss at 6,7</span>
+         <span class="s1">boss</span><span class="s2">.</span><span class="s1">place</span><span class="s2">(</span><span class="s1">grid</span><span class="s2">);</span>
+
+        <span class="s1">Sword sharp </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Sword</span><span class="s2">(</span><span class="s5">6</span><span class="s2">, </span><span class="s5">9</span><span class="s2">, </span><span class="s3">&quot;Sword&quot;</span><span class="s2">); </span><span class="s4">//sword at 6,9</span>
+        <span class="s1">sharp</span><span class="s2">.</span><span class="s1">place</span><span class="s2">(</span><span class="s1">grid</span><span class="s2">);</span>
+        <span class="s1">Shop market </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Shop</span><span class="s2">(</span><span class="s5">4</span><span class="s2">, </span><span class="s5">5</span><span class="s2">, </span><span class="s1">shopItems</span><span class="s2">); </span><span class="s4">//spawns shop at 4,5</span>
+         <span class="s1">market</span><span class="s2">.</span><span class="s1">place</span><span class="s2">(</span><span class="s1">grid</span><span class="s2">);</span>
+
+        <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">System</span><span class="s2">.</span><span class="s1">in</span><span class="s2">);</span>
+
+        <span class="s1">grid</span><span class="s2">.</span><span class="s1">display</span><span class="s2">();</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">();</span>
+        <span class="s0">while </span><span class="s2">(</span><span class="s0">true</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">print</span><span class="s2">(</span><span class="s3">&quot;Move (w/a/s/d or quit): &quot;</span><span class="s2">);</span>
+            <span class="s1">String command </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">().</span><span class="s1">toLowerCase</span><span class="s2">(); </span><span class="s4">//sets user input to lowercase</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">command</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;quit&quot;</span><span class="s2">)) {</span>
+                <span class="s0">break</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">player</span><span class="s2">.</span><span class="s1">move</span><span class="s2">(</span><span class="s1">command</span><span class="s2">, </span><span class="s1">grid</span><span class="s2">, </span><span class="s1">market</span><span class="s2">);</span>
+            <span class="s1">grid</span><span class="s2">.</span><span class="s1">display</span><span class="s2">();</span>
+        <span class="s2">}</span>
+
+
+
+        <span class="s1">scanner</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+        <span class="s4">// update grid</span>
+
+    <span class="s2">}</span>
+<span class="s2">}</span>
+
+</pre>
+</body>
+</html>
