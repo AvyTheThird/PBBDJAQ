@@ -104,6 +104,10 @@ public class Player extends Character {
             grid.setCell(newRow, newCol, '.');
         }
 
+        if (cell == 'B') {
+            bossCombat();
+        }
+
         //adds a random chance to encounter an enemy when moving
         if (cell == '.' && RNG.nextInt(10) == 0) { // 10% chance
             System.out.println("You encountered an enemy!");
